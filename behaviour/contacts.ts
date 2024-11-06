@@ -51,4 +51,8 @@ export class Contacts {
   static get contacts() {
     return this._contacts;
   }
+
+  static getContactById(id: string) {
+    return this.contacts?.find((contact) => contact.id === id);
+  }
 }
