@@ -8,7 +8,10 @@ const baseTasksAtom = atom<Value<Task[]>>([]);
 
 baseTasksAtom.onMount = (setAtom) => {
   setAtom(TasksService.getTasks());
-  return TasksService.subscribe("onTasksChange", setAtom);
+  return TasksService.subscribe("onTasksChange", (value) => {
+    console.log("updating tasks on mount", JSON.stringify(value));
+    setAtom(value);
+  });
 };
 
 export const allTasksAtom = selectAtom(
@@ -21,6 +24,13 @@ export const tasksByContactIdAtom = atomFamily((contactId: string) =>
   atom(
     (get) =>
       get(baseTasksAtom)?.filter((task) => task.contactId === contactId) ?? [],
+    deepEqual
+  )
+);
+
+export const taskByIdAtom = atomFamily((taskId: string) =>
+  atom(
+    (get) => get(baseTasksAtom)?.find((task) => task.id === taskId),
     deepEqual
   )
 );

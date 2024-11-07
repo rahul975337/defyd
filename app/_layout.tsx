@@ -32,6 +32,13 @@ export default function RootLayout() {
             animation: "fade",
           }}
         />
+        <Stack.Screen
+          name="update-task"
+          options={{
+            presentation: "transparentModal",
+            animation: "fade",
+          }}
+        />
       </Stack>
       {/* </ThemeProvider> */}
     </GestureHandlerRootView>

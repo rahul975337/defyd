@@ -1,7 +1,8 @@
 import { PriorityColors } from "@/constants/Colors";
 import { Task } from "@/types";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import React from "react";
+import { router } from "expo-router";
 function formatDate(date: Date): string {
   const options: Intl.DateTimeFormatOptions = {
     day: "numeric",
@@ -12,8 +13,16 @@ function formatDate(date: Date): string {
 
 export const TaskCard = ({ task }: { task: Task }) => {
   const formattedDate = formatDate(task.updatedAt ?? new Date());
+
+  const handlePress = () => {
+    router.push({ pathname: "/update-task", params: { taskId: task.id } });
+  };
+
   return (
-    <View className="p-4 flex-row justify-between items-center gap-4">
+    <Pressable
+      onPress={handlePress}
+      className="p-4 flex-row justify-between items-center gap-4"
+    >
       <View
         className="rounded-full h-7 w-7 border-solid border-2"
         style={{
@@ -26,6 +35,6 @@ export const TaskCard = ({ task }: { task: Task }) => {
         <Text className="text-lg font-medium">{task.title}</Text>
         <Text className="text-sm text-logo_red">{formattedDate}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
