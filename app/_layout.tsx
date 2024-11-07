@@ -29,11 +29,18 @@ export default function RootLayout() {
   }, [loaded]);
 
   return (
-    <GestureHandlerRootView
-      style={{ flex: 1, padding: 20, backgroundColor: "white" }}
-    >
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: "white" }}>
       {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
-      <Stack screenOptions={{ headerShown: false }}></Stack>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="tasks" />
+        <Stack.Screen
+          name="create-task"
+          options={{
+            presentation: "transparentModal",
+            animation: "fade",
+          }}
+        />
+      </Stack>
       {/* </ThemeProvider> */}
     </GestureHandlerRootView>
   );

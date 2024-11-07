@@ -1,18 +1,11 @@
 import clsx from "clsx";
 import { router } from "expo-router";
 import React from "react";
-import {
-  BackHandler,
-  Image,
-  Pressable,
-  Text,
-  View,
-  type ViewProps,
-} from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 
 export const Header = React.memo(function Header({
   title,
-  showBackButton = true,
+  showBackButton = false,
   className,
   subTitle,
   subTitleColor,
