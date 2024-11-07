@@ -8,10 +8,7 @@ const baseTasksAtom = atom<Value<Task[]>>([]);
 
 baseTasksAtom.onMount = (setAtom) => {
   setAtom(TasksService.getTasks());
-  return TasksService.subscribe("onTasksChange", (value) => {
-    console.log("updating tasks on mount", JSON.stringify(value));
-    setAtom(value);
-  });
+  return TasksService.subscribe("onTasksChange", setAtom);
 };
 
 export const allTasksAtom = selectAtom(

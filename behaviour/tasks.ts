@@ -28,7 +28,6 @@ export class TasksService {
 
   static createTask(task: Task) {
     task.id = (this._tasks.length + 1).toString();
-    console.log("creating task with priority", JSON.stringify(task.priority));
     this._tasks.push(task);
     this.changeTasks(this._tasks);
     return task;
@@ -36,7 +35,6 @@ export class TasksService {
 
   static updateTask(task: Task) {
     const index = this._tasks.findIndex((t) => t.id === task.id);
-    console.log("updating task with priority", JSON.stringify(task));
     this._tasks[index] = task;
     this.changeTasks(this._tasks);
     return task;

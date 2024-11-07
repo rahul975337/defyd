@@ -24,6 +24,7 @@ export default function UpdateTask() {
   );
   const task = useAtomValue(taskByIdAtom(taskId as string));
   const [taskState, setTaskState] = useState<Task>({
+    id: task?.id ?? "",
     title: task?.title ?? "",
     description: task?.description ?? "",
     contactId: task?.contactId ?? "",
@@ -40,7 +41,7 @@ export default function UpdateTask() {
       priority: selectedPriority ?? undefined,
     });
     router.back();
-  }, [task, selectedPriority]);
+  }, [task, selectedPriority, taskState]);
 
   return (
     <RoundedBottomModalWrapper className="">
@@ -51,7 +52,9 @@ export default function UpdateTask() {
           cursorColor={"#D10000"}
           placeholder="Task Name"
           value={taskState.title}
-          onChangeText={(text) => setTaskState({ ...taskState, title: text })}
+          onChangeText={(text) => {
+            setTaskState({ ...taskState, title: text });
+          }}
         />
         <TextInput
           cursorColor={"#D10000"}
