@@ -56,7 +56,7 @@ const ContactItem = ({ contact }: { contact: Contact }) => {
 export default function App() {
   const { areContactsLoaded, contacts } = useContacts();
   return (
-    <SafeAreaView className="flex-1 items-center justify-center">
+    <SafeAreaView className="flex-1 items-center justify-center bg-white">
       {areContactsLoaded ? (
         <View className="flex-1 w-full items-center">
           <FlatList

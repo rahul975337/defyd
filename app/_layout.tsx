@@ -29,10 +29,12 @@ export default function RootLayout() {
   }, [loaded]);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack screenOptions={{ headerShown: false }}></Stack>
-      </ThemeProvider>
+    <GestureHandlerRootView
+      style={{ flex: 1, padding: 20, backgroundColor: "white" }}
+    >
+      {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
+      <Stack screenOptions={{ headerShown: false }}></Stack>
+      {/* </ThemeProvider> */}
     </GestureHandlerRootView>
   );
 }
