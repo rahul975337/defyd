@@ -1,8 +1,10 @@
 import { Header } from "@/components/header";
+import { contactsAtom, filteredContactsAtom } from "@/data";
 import { useContacts } from "@/hooks/useContacts";
 import clsx from "clsx";
 import { Contact } from "expo-contacts";
 import { router } from "expo-router";
+import { useAtomValue } from "jotai";
 import { useCallback, useState } from "react";
 import {
   ActivityIndicator,
@@ -48,29 +50,20 @@ const ContactCard = ({ id, name, phoneNumbers }: Contact) => {
 
 export default function App() {
   const [searchText, setSearchText] = useState("");
-  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
-  const { areContactsLoaded, contacts } = useContacts();
-  const changeSearchText = useCallback(async (text: string) => {
-    setSearchText(text);
+  const contacts = useAtomValue(contactsAtom);
+  const filteredContacts = useAtomValue(filteredContactsAtom(searchText));
 
-    if (text.length >= 3) {
-      const data = contacts.filter((contact) =>
-        contact.name?.toLowerCase().includes(text.toLowerCase())
-      );
-      if (data.length > 0) {
-        setFilteredContacts(data);
-      }
-    } else {
-      setFilteredContacts([]);
-    }
+  const handleViewAll = useCallback(() => {
+    router.push({ pathname: "/all" });
   }, []);
+
+  useContacts();
+
   return (
     <SafeAreaView className="flex-1 p-5 bg-white">
       <View className="p-5">
         <Header
-          title={
-            <Image source={require("@/assets/images/defyd-logo-white.png")} />
-          }
+          title={<Image source={require("@/assets/images/defyd-logo.png")} />}
         />
       </View>
 
@@ -82,7 +75,8 @@ export default function App() {
           )}
           editable={true}
           key="contacts-search-text"
-          onChangeText={changeSearchText}
+          value={searchText}
+          onChangeText={setSearchText}
           placeholder="Search contacts"
           placeholderTextColor={"#999"}
           selectionColor={"#000"}
@@ -97,9 +91,9 @@ export default function App() {
       <FlatList
         ListEmptyComponent={listEmptyComponent}
         ListFooterComponent={
-          !areContactsLoaded ? (
+          !contacts ? (
             <ActivityIndicator
-              animating={!areContactsLoaded}
+              animating={!contacts}
               color={"#000"}
               size={"small"}
             />
@@ -115,6 +109,12 @@ export default function App() {
         renderItem={({ item }) => <ContactCard {...item} />}
         showsVerticalScrollIndicator={false}
       />
+      <Pressable
+        className="absolute bottom-5 right-5 bg-red-500 p-4 rounded-md"
+        onPress={handleViewAll}
+      >
+        <Text className="text-white">View All</Text>
+      </Pressable>
     </SafeAreaView>
   );
 }

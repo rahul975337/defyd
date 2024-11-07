@@ -28,6 +28,7 @@ export class TasksService {
 
   static createTask(task: Task) {
     task.id = (this._tasks.length + 1).toString();
+    console.log("creating task with priority", JSON.stringify(task.priority));
     this._tasks.push(task);
     this.changeTasks(this._tasks);
     return task;
@@ -49,7 +50,6 @@ export class TasksService {
   private static changeTasks(value: Value<Task[]>) {
     if (!value) return;
     this._tasks = value;
-    console.log("emitting tasks change");
     this._emitter.emit("onTasksChange", this.copy(value));
   }
 

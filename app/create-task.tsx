@@ -1,20 +1,24 @@
 import { TasksService } from "@/behaviour";
 import { RoundedBottomModalWrapper } from "@/components";
-import { Task } from "@/types";
+import { Priority, Task } from "@/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useState } from "react";
-import { Image, Pressable, Text, TextInput } from "react-native";
+import { Image, Pressable, TextInput } from "react-native";
 import { View } from "react-native";
-import { SelectableTab, TabItem } from "@/components";
+import { SelectableTab, TabItem, PrioritySelector } from "@/components";
+import clsx from "clsx";
 
 const taskOptions: TabItem[] = [
-  { id: "date", label: "Today" },
   { id: "priority", label: "Priority" },
+  { id: "date", label: "Today" },
   { id: "reminders", label: "Reminders" },
 ];
 
 export default function CreateTask() {
   const { contactId } = useLocalSearchParams();
+  const [selectedPriority, setSelectedPriority] = useState<Priority | null>(
+    null
+  );
   const [task, setTask] = useState<Task>({
     title: "",
     description: "",
@@ -23,10 +27,14 @@ export default function CreateTask() {
     updatedAt: new Date(),
   });
 
-  const [selectedOption, setSelectedOption] = useState<TabItem["id"]>("date");
+  const [selectedOption, setSelectedOption] =
+    useState<TabItem["id"]>("priority");
 
   const handleAddTask = useCallback(() => {
-    TasksService.createTask(task);
+    TasksService.createTask({
+      ...task,
+      priority: selectedPriority ?? undefined,
+    });
     router.back();
   }, [task]);
   return (
@@ -54,13 +62,23 @@ export default function CreateTask() {
         selectedId={selectedOption}
         onSelect={setSelectedOption}
       />
+
       <View className="w-full border-t border-gray-200"></View>
-      <View className="w-full p-3">
+      <View className="w-full flex-row justify-between p-3">
+        <View className="w-[70%] flex-row justify-around">
+          {selectedOption === "priority" ? (
+            <PrioritySelector
+              selectedPriority={selectedPriority}
+              setSelectedPriority={setSelectedPriority}
+            />
+          ) : null}
+        </View>
         <Pressable
           disabled={!task.title}
-          className={`self-end rounded-full bg-logo_red p-3 ${
+          className={clsx(
+            "self-end rounded-full bg-logo_red p-3",
             !task.title && "opacity-50"
-          }`}
+          )}
           onPress={handleAddTask}
         >
           <Image

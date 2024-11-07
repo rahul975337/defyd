@@ -4,22 +4,30 @@
     "slug": "defyd",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/defydapp_logo.jpeg",
+    "icon": "./assets/images/defydapp_logo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/defydapp_logo.jpeg",
+      "image": "./assets/images/defydapp_logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "imageResizeMode": "contain",
+      "imageSize": "50%"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tilwani03.defyd"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/defydapp_logo.jpeg",
+        "foregroundImage": "./assets/images/defydapp_logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.READ_CONTACTS",
+        "android.permission.WRITE_CONTACTS"
+      ],
+      "package": "com.tilwani03.defyd"
     },
     "plugins": [
       "expo-router",
@@ -32,6 +40,12 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "35657394-5698-4a03-a10f-4746fe299647"
+      }
+    },
+    "owner": "tilwani03"
   }
 }

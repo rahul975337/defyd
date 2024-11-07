@@ -24,7 +24,10 @@ export function SelectableTab({
         <Pressable
           key={item.id}
           onPress={() => onSelect(item.id)}
-          className={clsx("px-3 py-2 rounded-md border border-gray-200")}
+          className={clsx(
+            "px-3 py-2 rounded-md border border-gray-200",
+            selectedId === item.id && "border-green-700"
+          )}
         >
           <Text
             className={clsx(

@@ -1,3 +1,5 @@
+import { Priority } from "@/types";
+
 const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
 
@@ -20,7 +22,7 @@ export const Colors = {
   },
 };
 
-export const PriorityColors = {
+export const PriorityColors: Record<Priority, string> = {
   low: "#00C49F",
   medium: "#FF9F40",
   high: "#FF4500",
