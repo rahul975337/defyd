@@ -4,13 +4,18 @@ import { TaskList } from "@/components/task-list";
 import { router, useLocalSearchParams } from "expo-router";
 import { Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React from "react";
+import React, { useMemo } from "react";
+
 export default function Detail() {
   const { contactId } = useLocalSearchParams();
   const handleCreateTask = () => {
     router.push({ pathname: "/create-task", params: { contactId } });
   };
 
+  const contactDetails = useMemo(
+    () => ContactsService.getContactById(contactId as string),
+    [contactId]
+  );
   return (
     <SafeAreaView className="flex-1 items-center p-5 bg-white">
       <Header
@@ -18,11 +23,10 @@ export default function Detail() {
         title={
           <View className="items-center gap-2">
             <Text className="text-xl font-medium">
-              {ContactsService.getContactById(contactId as string)?.name ?? ""}
+              {contactDetails?.name ?? ""}
             </Text>
-            <Text className="text-sm text-light_gray_border">
-              {ContactsService.getContactById(contactId as string)
-                ?.phoneNumbers?.[0]?.number ?? ""}
+            <Text className="text-sm">
+              {contactDetails?.phoneNumbers?.[0]?.number ?? ""}
             </Text>
           </View>
         }

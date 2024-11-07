@@ -38,6 +38,7 @@ export default function CreateTask() {
     });
     router.back();
   }, [task]);
+
   return (
     <RoundedBottomModalWrapper className="">
       <View className="w-full p-5">

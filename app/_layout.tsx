@@ -25,7 +25,6 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: "white" }}>
       {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="tasks" />
         <Stack.Screen
           name="create-task"
           options={{
