@@ -2,17 +2,21 @@ import { PriorityColors } from "@/constants/Colors";
 import { Pressable, Text } from "react-native";
 import clsx from "clsx";
 import { Priority } from "@/types";
+import { useCallback } from "react";
 
 export const PrioritySelector = ({
   selectedPriority,
   setSelectedPriority,
 }: {
   selectedPriority: Priority | null;
-  setSelectedPriority: (priority: Priority) => void;
+  setSelectedPriority: (priority: Priority | null) => void;
 }) => {
-  const handleSelectPriority = (priority: Priority) => () => {
-    setSelectedPriority(priority);
-  };
+  const handleSelectPriority = useCallback(
+    (priority: Priority) => () => {
+      setSelectedPriority(priority);
+    },
+    [setSelectedPriority]
+  );
 
   return (
     <>

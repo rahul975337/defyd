@@ -20,16 +20,8 @@ export default function Detail() {
     <SafeAreaView className="flex-1 items-center p-5 bg-white">
       <Header
         showBackButton
-        title={
-          <View className="items-center gap-2">
-            <Text className="text-xl font-medium">
-              {contactDetails?.name ?? ""}
-            </Text>
-            <Text className="text-sm">
-              {contactDetails?.phoneNumbers?.[0]?.number ?? ""}
-            </Text>
-          </View>
-        }
+        title={contactDetails?.name ?? ""}
+        subTitle={contactDetails?.phoneNumbers?.[0]?.number ?? ""}
         titleClassName="text-xl font-medium"
       />
 

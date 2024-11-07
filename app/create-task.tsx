@@ -37,7 +37,7 @@ export default function CreateTask() {
       priority: selectedPriority ?? undefined,
     });
     router.back();
-  }, [task]);
+  }, [task, selectedPriority]);
 
   return (
     <RoundedBottomModalWrapper className="">
