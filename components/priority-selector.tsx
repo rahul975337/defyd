@@ -1,5 +1,4 @@
 import { PriorityColors } from "@/constants/Colors";
-import { useCallback } from "react";
 import { Pressable, Text } from "react-native";
 import clsx from "clsx";
 import { Priority } from "@/types";

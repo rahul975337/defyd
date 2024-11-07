@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 import { Text, View } from "react-native";
-
+import React from "react";
 import { FlatList } from "react-native";
 import { TaskCard } from "./task-card";
 import { tasksByContactIdAtom, allTasksAtom } from "@/data";

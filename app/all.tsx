@@ -3,11 +3,16 @@ import { TaskList } from "@/components/task-list";
 import { router } from "expo-router";
 import { Image, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useEffect } from "react";
 
 export default function All() {
   const handleCreateTask = () => {
     router.push({ pathname: "/create-task" });
   };
+
+  useEffect(() => {
+    console.log("All");
+  }, []);
   return (
     <SafeAreaView className="flex-1 items-center p-5 bg-white">
       <Header

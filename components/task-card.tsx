@@ -1,7 +1,7 @@
 import { PriorityColors } from "@/constants/Colors";
 import { Task } from "@/types";
 import { Text, View } from "react-native";
-
+import React from "react";
 function formatDate(date: Date): string {
   const options: Intl.DateTimeFormatOptions = {
     day: "numeric",

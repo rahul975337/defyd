@@ -7,6 +7,7 @@ import { Image, Pressable, TextInput } from "react-native";
 import { View } from "react-native";
 import { SelectableTab, TabItem, PrioritySelector } from "@/components";
 import clsx from "clsx";
+import React from "react";
 
 const taskOptions: TabItem[] = [
   { id: "priority", label: "Priority" },

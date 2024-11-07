@@ -1,5 +1,5 @@
-import { Image, Pressable } from "react-native";
-
+import { Pressable } from "react-native";
+import React from "react";
 import { ReactNode } from "react";
 import { router } from "expo-router";
 import clsx from "clsx";

@@ -1,13 +1,10 @@
 import { ContactsService } from "@/behaviour";
-import { Header, TaskCard } from "@/components";
+import { Header } from "@/components";
 import { TaskList } from "@/components/task-list";
-import { tasksByContactIdAtom } from "@/data";
 import { router, useLocalSearchParams } from "expo-router";
-import { useAtomValue } from "jotai";
-import { useEffect } from "react";
-import { FlatList, Image, Pressable, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import React from "react";
 export default function Detail() {
   const { contactId } = useLocalSearchParams();
   const handleCreateTask = () => {
