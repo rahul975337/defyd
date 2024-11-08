@@ -40,9 +40,8 @@ export class TasksService {
     return task;
   }
 
-  static deleteTask(id: string) {
-    const index = this._tasks.findIndex((t) => t.id === id);
-    this._tasks.splice(index, 1);
+  static async deleteTask(taskId: string) {
+    this._tasks = this._tasks.filter((task) => task.id !== taskId);
     this.changeTasks(this._tasks);
   }
 

@@ -3,7 +3,7 @@ import { RoundedBottomModalWrapper } from "@/components";
 import { Priority, Task } from "@/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useState } from "react";
-import { Image, Pressable, TextInput } from "react-native";
+import { Image, Pressable, Text, TextInput } from "react-native";
 import { View } from "react-native";
 import { SelectableTab, TabItem, PrioritySelector } from "@/components";
 import clsx from "clsx";
@@ -35,7 +35,7 @@ export default function UpdateTask() {
   const [selectedOption, setSelectedOption] =
     useState<TabItem["id"]>("priority");
 
-  const handleAddTask = useCallback(() => {
+  const handleUpdateTask = useCallback(() => {
     TasksService.updateTask({
       ...taskState,
       priority: selectedPriority ?? undefined,
@@ -43,8 +43,19 @@ export default function UpdateTask() {
     router.back();
   }, [task, selectedPriority, taskState]);
 
+  const handleDeleteTask = useCallback(() => {
+    TasksService.deleteTask(taskId as string);
+    router.back();
+  }, [taskId]);
+
   return (
     <RoundedBottomModalWrapper className="">
+      <Pressable
+        onPress={handleDeleteTask}
+        className="absolute right-4 z-20 top-4 bg-logo_red p-2 rounded-md"
+      >
+        <Text className="text-white">Delete</Text>
+      </Pressable>
       <View className="w-full p-5">
         <TextInput
           autoFocus
@@ -89,7 +100,7 @@ export default function UpdateTask() {
             "self-end rounded-full bg-logo_red p-3",
             !taskState.title && "opacity-50"
           )}
-          onPress={handleAddTask}
+          onPress={handleUpdateTask}
         >
           <Image
             source={require("@/assets/images/add.png")}
