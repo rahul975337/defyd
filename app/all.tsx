@@ -4,8 +4,10 @@ import { router } from "expo-router";
 import { Image, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
+import { TaskModel } from "@/behaviour";
+import { withTasks } from "@/components";
 
-export default function All() {
+function All({ tasks }: { tasks: TaskModel[] }) {
   const handleCreateTask = () => {
     router.push({ pathname: "/create-task" });
   };
@@ -18,7 +20,7 @@ export default function All() {
         titleClassName="text-xl font-medium"
       />
 
-      <TaskList listType="all" />
+      <TaskList tasks={tasks} />
       <Pressable
         className="absolute bottom-4 rounded-full bg-logo_red p-4"
         onPress={handleCreateTask}
@@ -33,3 +35,5 @@ export default function All() {
     </SafeAreaView>
   );
 }
+
+export default withTasks(All);

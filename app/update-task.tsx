@@ -1,5 +1,5 @@
-import { TasksService } from "@/behaviour";
-import { RoundedBottomModalWrapper } from "@/components";
+import { TaskModel, TasksService } from "@/behaviour";
+import { RoundedBottomModalWrapper, withTasks } from "@/components";
 import { Priority, Task } from "@/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useState } from "react";
@@ -9,7 +9,6 @@ import { SelectableTab, TabItem, PrioritySelector } from "@/components";
 import clsx from "clsx";
 import React from "react";
 import { useAtomValue } from "jotai";
-import { taskByIdAtom } from "@/data";
 
 const taskOptions: TabItem[] = [
   { id: "priority", label: "Priority" },
@@ -17,12 +16,12 @@ const taskOptions: TabItem[] = [
   { id: "reminders", label: "Reminders" },
 ];
 
-export default function UpdateTask() {
+function UpdateTask({ tasks }: { tasks: TaskModel[] }) {
   const { taskId } = useLocalSearchParams();
   const [selectedPriority, setSelectedPriority] = useState<Priority | null>(
-    TasksService.getTask(taskId as string)?.priority ?? null
+    tasks.find((task) => task.id === taskId)?.priority ?? null
   );
-  const task = useAtomValue(taskByIdAtom(taskId as string));
+  const task = tasks.find((task) => task.id === taskId);
   const [taskState, setTaskState] = useState<Task>({
     id: task?.id ?? "",
     title: task?.title ?? "",
@@ -36,7 +35,7 @@ export default function UpdateTask() {
     useState<TabItem["id"]>("priority");
 
   const handleUpdateTask = useCallback(() => {
-    TasksService.updateTask({
+    TasksService.updateTask(taskId as string, {
       ...taskState,
       priority: selectedPriority ?? undefined,
     });
@@ -113,3 +112,5 @@ export default function UpdateTask() {
     </RoundedBottomModalWrapper>
   );
 }
+
+export default withTasks(UpdateTask);

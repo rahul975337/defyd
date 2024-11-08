@@ -1,5 +1,5 @@
 import { PriorityColors } from "@/constants/Colors";
-import { Task } from "@/types";
+import { TaskModel } from "@/behaviour";
 import { Pressable, Text, View } from "react-native";
 import React from "react";
 import { router } from "expo-router";
@@ -11,7 +11,7 @@ function formatDate(date: Date): string {
   return new Intl.DateTimeFormat("en-GB", options).format(date);
 }
 
-export const TaskCard = ({ task }: { task: Task }) => {
+export const TaskCard = ({ task }: { task: TaskModel }) => {
   const formattedDate = formatDate(task.updatedAt ?? new Date());
 
   const handlePress = () => {

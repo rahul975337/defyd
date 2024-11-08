@@ -1,12 +1,13 @@
 import { ContactsService } from "@/behaviour";
-import { Header } from "@/components";
+import { Header, withTasks } from "@/components";
 import { TaskList } from "@/components/task-list";
 import { router, useLocalSearchParams } from "expo-router";
 import { Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useMemo } from "react";
+import { TaskModel } from "@/behaviour";
 
-export default function Detail() {
+function Detail({ tasks }: { tasks: TaskModel[] }) {
   const { contactId } = useLocalSearchParams();
   const handleCreateTask = () => {
     router.push({ pathname: "/create-task", params: { contactId } });
@@ -25,7 +26,7 @@ export default function Detail() {
         titleClassName="text-xl font-medium"
       />
 
-      <TaskList listType="contact" contactId={contactId as string} />
+      <TaskList tasks={tasks} />
       <Pressable
         className="absolute bottom-4 rounded-full bg-logo_red p-4"
         onPress={handleCreateTask}
@@ -40,3 +41,5 @@ export default function Detail() {
     </SafeAreaView>
   );
 }
+
+export default withTasks(Detail);

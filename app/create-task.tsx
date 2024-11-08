@@ -1,6 +1,6 @@
 import { TasksService } from "@/behaviour";
 import { RoundedBottomModalWrapper } from "@/components";
-import { Priority, Task } from "@/types";
+import { Priority } from "@/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useState } from "react";
 import { Image, Pressable, TextInput } from "react-native";
@@ -8,6 +8,7 @@ import { View } from "react-native";
 import { SelectableTab, TabItem, PrioritySelector } from "@/components";
 import clsx from "clsx";
 import React from "react";
+import { Task } from "@/types";
 
 const taskOptions: TabItem[] = [
   { id: "priority", label: "Priority" },
@@ -24,8 +25,6 @@ export default function CreateTask() {
     title: "",
     description: "",
     contactId: contactId as string,
-    createdAt: new Date(),
-    updatedAt: new Date(),
   });
 
   const [selectedOption, setSelectedOption] =
