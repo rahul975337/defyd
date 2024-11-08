@@ -1,5 +1,41 @@
 import { Task, Value } from "@/types";
 import { EventEmitter } from "fbemitter";
+import { TaskModel, database } from "@/behaviour/db";
+import { Q } from "@nozbe/watermelondb";
+
+//  const addTaskList = async (name: string) => {
+// 	const newTaskList = await database.write(async () => {
+// 		const newTaskList = await database
+// 			.get<TaskList>('task_lists')
+// 			.create((taskList) => {
+// 				taskList.name = name;
+// 			});
+// 		return newTaskList;
+// 	});
+// 	return newTaskList;
+// };
+const addTaskList = async (name: string) => {
+  const newTaskList = await database.write(async () => {
+    const newTaskList = await database
+      .get<TaskModel>("tasks")
+      .create((taskList) => {
+        taskList.title = name;
+      });
+    return newTaskList;
+  });
+  return newTaskList;
+};
+
+const getTaskLists = () => {
+  return database.get<TaskModel>("tasks").query(Q.sortBy("title")).observe();
+};
+
+const deleteTaskList = (id: string) => {
+  database.write(async () => {
+    const taskList = await database.get<TaskModel>("tasks").find(id);
+    await taskList.destroyPermanently();
+  });
+};
 
 export class TasksService {
   private static _emitter = new EventEmitter();
