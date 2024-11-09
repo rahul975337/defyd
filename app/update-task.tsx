@@ -21,7 +21,7 @@ const taskOptions: TabItem[] = [
 
 const UpdateTaskScreen = ({ task }: { task: TaskModel }) => {
   const [selectedPriority, setSelectedPriority] = useState<Priority | null>(
-    null
+    task.priority
   );
   const [selectedOption, setSelectedOption] =
     useState<TabItem["id"]>("priority");
