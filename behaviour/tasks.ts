@@ -14,6 +14,7 @@ export class TasksService {
           _task.title = task.title;
           _task.description = task.description;
           _task.contactId = task.contactId;
+          _task.priority = task.priority;
         });
       return taskToCreate;
     });
@@ -35,5 +36,15 @@ export class TasksService {
       const taskToDelete = await database.get<TaskModel>("tasks").find(id);
       await taskToDelete.markAsDeleted();
     });
+  }
+
+  static getTaskById(id: string) {
+    return database.get<TaskModel>("tasks").findAndObserve(id);
+  }
+
+  static getTasksByContactId(contactId: string) {
+    return database
+      .get<TaskModel>("tasks")
+      .query(Q.where("contact_id", contactId));
   }
 }

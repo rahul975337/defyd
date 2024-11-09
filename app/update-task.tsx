@@ -1,14 +1,17 @@
-import { TaskModel, TasksService } from "@/behaviour";
-import { RoundedBottomModalWrapper, withTasks } from "@/components";
-import { Priority, Task } from "@/types";
-import { router, useLocalSearchParams } from "expo-router";
-import { useCallback, useState } from "react";
-import { Image, Pressable, Text, TextInput } from "react-native";
-import { View } from "react-native";
-import { SelectableTab, TabItem, PrioritySelector } from "@/components";
+import { TasksService } from "@/behaviour";
+import { TaskModel } from "@/behaviour/db/models";
+import { useLocalSearchParams, router } from "expo-router";
+import { useState } from "react";
+import { View, TextInput, Pressable, Text, Image } from "react-native";
+import {
+  PrioritySelector,
+  RoundedBottomModalWrapper,
+  SelectableTab,
+  TabItem,
+  withTaskById,
+} from "@/components";
 import clsx from "clsx";
-import React from "react";
-import { useAtomValue } from "jotai";
+import { Priority, Task } from "@/types";
 
 const taskOptions: TabItem[] = [
   { id: "priority", label: "Priority" },
@@ -16,36 +19,36 @@ const taskOptions: TabItem[] = [
   { id: "reminders", label: "Reminders" },
 ];
 
-function UpdateTask({ tasks }: { tasks: TaskModel[] }) {
-  const { taskId } = useLocalSearchParams();
+const UpdateTaskScreen = ({ task }: { task: TaskModel }) => {
   const [selectedPriority, setSelectedPriority] = useState<Priority | null>(
-    tasks.find((task) => task.id === taskId)?.priority ?? null
+    null
   );
-  const task = tasks.find((task) => task.id === taskId);
-  const [taskState, setTaskState] = useState<Task>({
-    id: task?.id ?? "",
-    title: task?.title ?? "",
-    description: task?.description ?? "",
-    contactId: task?.contactId ?? "",
-    createdAt: task?.createdAt ?? new Date(),
-    updatedAt: task?.updatedAt ?? new Date(),
-  });
-
   const [selectedOption, setSelectedOption] =
     useState<TabItem["id"]>("priority");
+  const [taskState, setTaskState] = useState<Task>({
+    title: task.title,
+    description: task.description,
+    contactId: task.contactId,
+    priority: task.priority,
+  });
+  const handleUpdate = async () => {
+    try {
+      TasksService.updateTask(task.id, {
+        title: taskState.title,
+        description: taskState.description,
+        contactId: taskState.contactId,
+        priority: selectedPriority ?? undefined,
+      });
+      router.back();
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
 
-  const handleUpdateTask = useCallback(() => {
-    TasksService.updateTask(taskId as string, {
-      ...taskState,
-      priority: selectedPriority ?? undefined,
-    });
+  const handleDeleteTask = async () => {
+    TasksService.deleteTask(task.id);
     router.back();
-  }, [task, selectedPriority, taskState]);
-
-  const handleDeleteTask = useCallback(() => {
-    TasksService.deleteTask(taskId as string);
-    router.back();
-  }, [taskId]);
+  };
 
   return (
     <RoundedBottomModalWrapper className="">
@@ -99,7 +102,7 @@ function UpdateTask({ tasks }: { tasks: TaskModel[] }) {
             "self-end rounded-full bg-logo_red p-3",
             !taskState.title && "opacity-50"
           )}
-          onPress={handleUpdateTask}
+          onPress={handleUpdate}
         >
           <Image
             source={require("@/assets/images/add.png")}
@@ -111,6 +114,10 @@ function UpdateTask({ tasks }: { tasks: TaskModel[] }) {
       </View>
     </RoundedBottomModalWrapper>
   );
-}
+};
 
-export default withTasks(UpdateTask);
+export default function UpdateTask() {
+  const { taskId } = useLocalSearchParams();
+  const Enhanced = withTaskById(UpdateTaskScreen);
+  return <Enhanced id={taskId} />;
+}

@@ -34,7 +34,6 @@ export class ContactsService {
     await database.write(async () => {
       const contactRecords = contacts.map((contact) =>
         database.get<ContactModel>("contacts").prepareCreate((record) => {
-          console.log(contact.phoneNumbers?.[0].number);
           record.name = contact.name;
           record.phoneNumber = contact.phoneNumbers?.[0].number;
         })
@@ -59,6 +58,6 @@ export class ContactsService {
   }
 
   static getContactById(id: string) {
-    return database.get<ContactModel>("contacts").find(id);
+    return database.get<ContactModel>("contacts").findAndObserve(id);
   }
 }

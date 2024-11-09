@@ -6,6 +6,7 @@ import {
   readonly,
   text,
   children,
+  relation,
 } from "@nozbe/watermelondb/decorators";
 
 export class ContactModel extends Model {
@@ -13,6 +14,7 @@ export class ContactModel extends Model {
 
   @text("name") name;
   @text("phone_number") phoneNumber;
+  @children("tasks") tasks;
 }
 
 export class TaskModel extends Model {
@@ -23,6 +25,7 @@ export class TaskModel extends Model {
   @text("description") description;
   @field("completed") completed;
   @text("contact_id") contactId;
+  @relation("contact_id", "contacts") contact;
   @readonly @date("created_at") createdAt;
   @readonly @date("updated_at") updatedAt;
 }

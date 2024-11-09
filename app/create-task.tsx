@@ -33,6 +33,7 @@ export default function CreateTask() {
   const handleAddTask = useCallback(() => {
     TasksService.createTask({
       ...task,
+      contactId: contactId as string,
       priority: selectedPriority ?? undefined,
     });
     router.back();

@@ -1,28 +1,30 @@
-import { ContactsService } from "@/behaviour";
-import { Header, withTasks } from "@/components";
+import { ContactModel } from "@/behaviour";
+import { Header, withTaskByContactId } from "@/components";
 import { TaskList } from "@/components/task-list";
 import { router, useLocalSearchParams } from "expo-router";
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useMemo } from "react";
+import React from "react";
 import { TaskModel } from "@/behaviour";
 
-function Detail({ tasks }: { tasks: TaskModel[] }) {
+function _Detail({
+  tasks,
+  contact,
+}: {
+  tasks: TaskModel[];
+  contact: ContactModel;
+}) {
   const { contactId } = useLocalSearchParams();
   const handleCreateTask = () => {
     router.push({ pathname: "/create-task", params: { contactId } });
   };
 
-  const contactDetails = useMemo(
-    () => ContactsService.getContactById(contactId as string),
-    [contactId]
-  );
   return (
     <SafeAreaView className="flex-1 items-center p-5 bg-white">
       <Header
         showBackButton
-        title={contactDetails?.name ?? ""}
-        subTitle={contactDetails?.phoneNumbers?.[0]?.number ?? ""}
+        title={contact.name}
+        subTitle={contact.phoneNumber}
         titleClassName="text-xl font-medium"
       />
 
@@ -42,4 +44,8 @@ function Detail({ tasks }: { tasks: TaskModel[] }) {
   );
 }
 
-export default withTasks(Detail);
+export default function Detail() {
+  const { contactId } = useLocalSearchParams();
+  const Enhanced = withTaskByContactId(_Detail);
+  return <Enhanced contactId={contactId} />;
+}
