@@ -1,9 +1,4 @@
-import {
-  ContactsService,
-  database,
-  TaskModel,
-  TasksService,
-} from "@/behaviour";
+import { ContactsService, TasksService } from "@/behaviour";
 import { withObservables } from "@nozbe/watermelondb/react";
 
 export const withTasks = withObservables(["tasks"], () => ({

@@ -29,14 +29,14 @@ export default function RootLayout() {
           name="create-task"
           options={{
             presentation: "transparentModal",
-            animation: "fade",
+            animation: "slide_from_bottom",
           }}
         />
         <Stack.Screen
           name="update-task"
           options={{
             presentation: "transparentModal",
-            animation: "fade",
+            animation: "slide_from_bottom",
           }}
         />
       </Stack>

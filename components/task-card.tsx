@@ -3,6 +3,7 @@ import { TaskModel } from "@/behaviour";
 import { Pressable, Text, View } from "react-native";
 import React from "react";
 import { router } from "expo-router";
+
 function formatDate(date: Date): string {
   const options: Intl.DateTimeFormatOptions = {
     day: "numeric",
