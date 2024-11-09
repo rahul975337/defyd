@@ -27,6 +27,7 @@ export class TasksService {
       await taskToUpdate.update((_task) => {
         _task.title = task.title;
         _task.description = task.description;
+        _task.priority = task.priority;
       });
     });
   }
