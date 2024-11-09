@@ -9,11 +9,23 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    ```bash
    npm install
    ```
+   or
+    ```bash
+   yarn install
+   ```
 
 2. Start the app
 
    ```bash
     npx expo start
+   ```
+   or
+    ```bash
+    yarn start
+   ```
+    or
+    ```bash
+    npm start
    ```
 
 In the output, you'll find options to open the app in a
