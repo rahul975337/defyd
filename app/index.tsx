@@ -1,5 +1,4 @@
 import { Header } from "@/components/header";
-import { contactsAtom, filteredContactsAtom } from "@/data";
 import { useContacts } from "@/hooks/useContacts";
 import clsx from "clsx";
 import { Contact } from "expo-contacts";
@@ -17,41 +16,8 @@ import {
 import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const listEmptyComponent = () => (
-  <Text className="mt-25 self-center text-center text-light_gray_border">
-    No contacts found
-  </Text>
-);
-
-const ContactCard = ({ id, name, phoneNumbers }: Contact) => {
-  const handlePress = useCallback(() => {
-    router.push({ pathname: "/detail", params: { contactId: id } });
-  }, []);
-
-  return (
-    <Pressable
-      className="w-full items-start rounded-md bg-white p-4 elevation-sm"
-      onPress={handlePress}
-    >
-      <Text className="text-black">{name}</Text>
-      {phoneNumbers?.map((phoneNumber, index) => {
-        return (
-          <Text
-            className="text-black"
-            key={`${phoneNumber}-${index.toString()}`}
-          >
-            {phoneNumber.number}
-          </Text>
-        );
-      })}
-    </Pressable>
-  );
-};
-
 export default function App() {
   const [searchText, setSearchText] = useState("");
-  const contacts = useAtomValue(contactsAtom);
-  const filteredContacts = useAtomValue(filteredContactsAtom(searchText));
 
   const handleViewAll = useCallback(() => {
     router.push({ pathname: "/all" });
@@ -88,27 +54,7 @@ export default function App() {
         />
       </View>
 
-      <FlatList
-        ListEmptyComponent={listEmptyComponent}
-        ListFooterComponent={
-          !contacts ? (
-            <ActivityIndicator
-              animating={!contacts}
-              color={"#000"}
-              size={"small"}
-            />
-          ) : null
-        }
-        ItemSeparatorComponent={() => <View className="h-6" />}
-        contentContainerStyle={{
-          paddingHorizontal: 10,
-        }}
-        data={searchText.length > 2 ? filteredContacts : contacts}
-        keyExtractor={(item) => item.phoneNumbers?.[0]?.number ?? ""}
-        onEndReachedThreshold={0.2}
-        renderItem={({ item }) => <ContactCard {...item} />}
-        showsVerticalScrollIndicator={false}
-      />
+      {/* View All */}
       <Pressable
         className="absolute bottom-5 right-5 bg-red-500 p-4 rounded-md"
         onPress={handleViewAll}

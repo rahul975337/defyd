@@ -19,7 +19,7 @@ export default appSchema({
       name: "contacts",
       columns: [
         { name: "name", type: "string" },
-        { name: "phone", type: "string", isOptional: true },
+        { name: "phone_number", type: "string", isOptional: true },
       ],
     }),
   ],

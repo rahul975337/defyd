@@ -4,37 +4,36 @@ import { Task } from "@/types";
 
 export class TasksService {
   static getTasks() {
-    return database.get<TaskModel>("tasks").query(Q.sortBy("title")).observe();
+    return database.get<TaskModel>("tasks").query(Q.sortBy("priority", "desc"));
   }
   static createTask(task: Task) {
-    const newTaskList = database.write(async () => {
-      const newTaskList = await database
+    const newTask = database.write(async () => {
+      const taskToCreate = await database
         .get<TaskModel>("tasks")
         .create((_task) => {
           _task.title = task.title;
           _task.description = task.description;
           _task.contactId = task.contactId;
         });
-      return newTaskList;
+      return taskToCreate;
     });
-    return newTaskList;
-  }
-
-  static deleteTask(id: string) {
-    database.write(async () => {
-      const taskList = await database.get<TaskModel>("tasks").find(id);
-      await taskList.markAsDeleted();
-    });
+    return newTask;
   }
 
   static updateTask(id: string, task: Task) {
     database.write(async () => {
-      const taskList = await database.get<TaskModel>("tasks").find(id);
-      await taskList.update((_task) => {
+      const taskToUpdate = await database.get<TaskModel>("tasks").find(id);
+      await taskToUpdate.update((_task) => {
         _task.title = task.title;
         _task.description = task.description;
-        _task.contactId = task.contactId;
       });
+    });
+  }
+
+  static deleteTask(id: string) {
+    database.write(async () => {
+      const taskToDelete = await database.get<TaskModel>("tasks").find(id);
+      await taskToDelete.markAsDeleted();
     });
   }
 }
