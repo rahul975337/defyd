@@ -1,19 +1,11 @@
+import { resetDB } from "@/behaviour";
+import { ContactsList } from "@/components";
 import { Header } from "@/components/header";
 import { useContacts } from "@/hooks/useContacts";
 import clsx from "clsx";
-import { Contact } from "expo-contacts";
 import { router } from "expo-router";
-import { useAtomValue } from "jotai";
 import { useCallback, useState } from "react";
-import {
-  ActivityIndicator,
-  Image,
-  Pressable,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { Button, Image, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
@@ -27,6 +19,7 @@ export default function App() {
 
   return (
     <SafeAreaView className="flex-1 p-5 bg-white">
+      <Button title="Reset DB" onPress={resetDB} />
       <View className="p-5">
         <Header
           title={<Image source={require("@/assets/images/defyd-logo.png")} />}
@@ -54,7 +47,7 @@ export default function App() {
         />
       </View>
 
-      {/* View All */}
+      <ContactsList />
       <Pressable
         className="absolute bottom-5 right-5 bg-red-500 p-4 rounded-md"
         onPress={handleViewAll}

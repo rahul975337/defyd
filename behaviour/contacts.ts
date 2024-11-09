@@ -32,15 +32,15 @@ export class ContactsService {
 
   private static async addContacts(contacts: Contact[]) {
     await database.write(async () => {
-      await database
-        .get<ContactModel>("contacts")
-        .create((record) => {
-          console.log(contacts[0].phoneNumbers?.[0].number);
-          record.name = contacts[0].name;
-          record.phoneNumber = contacts[0].phoneNumbers?.[0].number;
+      const contactRecords = contacts.map((contact) =>
+        database.get<ContactModel>("contacts").prepareCreate((record) => {
+          console.log(contact.phoneNumbers?.[0].number);
+          record.name = contact.name;
+          record.phoneNumber = contact.phoneNumbers?.[0].number;
         })
-        .then(() => console.log("Contact added"))
-        .catch((error) => console.log(error));
+      );
+
+      await database.batch(...contactRecords);
     });
   }
 

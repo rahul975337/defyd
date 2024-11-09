@@ -6,7 +6,6 @@ import {
   View,
 } from "react-native";
 import { withContacts } from "./with-contacts";
-import { Contact, ContactTypes } from "expo-contacts";
 import { useCallback } from "react";
 import { router } from "expo-router";
 import { ContactModel } from "@/behaviour";
@@ -17,7 +16,15 @@ const listEmptyComponent = () => (
   </Text>
 );
 
-const ContactCard = ({ id, name, phoneNumbers }: Contact) => {
+const ContactCard = ({
+  id,
+  name,
+  phoneNumber,
+}: {
+  id: string;
+  name: string;
+  phoneNumber: string;
+}) => {
   const handlePress = useCallback(() => {
     router.push({ pathname: "/detail", params: { contactId: id } });
   }, []);
@@ -28,21 +35,14 @@ const ContactCard = ({ id, name, phoneNumbers }: Contact) => {
       onPress={handlePress}
     >
       <Text className="text-black">{name}</Text>
-      {phoneNumbers?.map((phoneNumber, index) => {
-        return (
-          <Text
-            className="text-black"
-            key={`${phoneNumber}-${index.toString()}`}
-          >
-            {phoneNumber.number}
-          </Text>
-        );
-      })}
+      {/* {phoneNumbers?.map((phoneNumber, index) => {
+        return ( */}
+      <Text className="text-black">{phoneNumber}</Text>
     </Pressable>
   );
 };
 
-function ContactsList({ contacts }: { contacts: ContactModel[] }) {
+function _ContactsList({ contacts }: { contacts: ContactModel[] }) {
   return (
     <FlatList
       ListEmptyComponent={listEmptyComponent}
@@ -65,9 +65,8 @@ function ContactsList({ contacts }: { contacts: ContactModel[] }) {
       renderItem={({ item }) => (
         <ContactCard
           id={item.id}
-          phoneNumbers={item.phoneNumber}
+          phoneNumber={item.phoneNumber}
           name={item.name}
-          contactType={ContactTypes.Person}
         />
       )}
       showsVerticalScrollIndicator={false}
@@ -75,4 +74,4 @@ function ContactsList({ contacts }: { contacts: ContactModel[] }) {
   );
 }
 
-export const withContactsList = withContacts(ContactsList);
+export const ContactsList = withContacts(_ContactsList);
