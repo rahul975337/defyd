@@ -5,6 +5,7 @@ import {
   Contact,
 } from "expo-contacts";
 import { ContactModel, database } from "./db";
+import { Q } from "@nozbe/watermelondb";
 
 export class ContactsService {
   static async checkPermission() {
@@ -59,5 +60,11 @@ export class ContactsService {
 
   static getContactById(id: string) {
     return database.get<ContactModel>("contacts").findAndObserve(id);
+  }
+
+  static getContactsWithTasks() {
+    return database
+      .get<ContactModel>("contacts")
+      .query(Q.on("tasks", Q.where("contact_id", Q.notEq(null))));
   }
 }
