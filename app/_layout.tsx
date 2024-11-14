@@ -9,9 +9,15 @@ import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { View, Image } from "react-native";
 import { LoadingAnimation } from "@/components/LoadingAnimation";
-
+import { BackgroundTask } from "@/behaviour";
+import { ContactsService } from "@/behaviour";
 SplashScreen.hideAsync();
+import * as TaskManager from "expo-task-manager";
 
+TaskManager.defineTask(BackgroundTask.BACKGROUND_FETCH_TASK, async () => {
+  console.log("Defining background task");
+  await ContactsService.load();
+});
 const useSplashScreen = () => {
   const [fontsLoaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
