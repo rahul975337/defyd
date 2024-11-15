@@ -1,16 +1,17 @@
-import { ContactsService } from "@/behaviour";
+import { BackgroundTask, ContactsService } from "@/behaviour";
 import { ContactsList } from "@/components";
 import { Header } from "@/components/header";
 import { router } from "expo-router";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { BackgroundTask } from "@/behaviour";
 
 export default function App() {
   const handleViewAll = useCallback(() => {
     router.push({ pathname: "/all" });
   }, []);
+
+  const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
     const setupBackgroundTask = async () => {
@@ -29,10 +30,6 @@ export default function App() {
       if (permission) {
         console.log("Registering background task...");
         await BackgroundTask.register();
-        const { status, isRegistered } = await BackgroundTask.check();
-        console.log(
-          `Background task registration status: ${status}, isRegistered: ${isRegistered}`
-        );
       } else {
         console.log(
           "Permission denied, skipping background task registration."

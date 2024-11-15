@@ -27,7 +27,7 @@ export class BackgroundTask {
 
     try {
       await BackgroundFetch.registerTaskAsync(this.BACKGROUND_FETCH_TASK, {
-        minimumInterval: 20,
+        minimumInterval: 0,
         stopOnTerminate: false,
         startOnBoot: true,
       });
@@ -51,6 +51,21 @@ export class BackgroundTask {
       this.BACKGROUND_FETCH_TASK
     );
     return { status, isRegistered };
+  }
+
+  static async define() {
+    console.log("define called");
+    TaskManager.defineTask(this.BACKGROUND_FETCH_TASK, async () => {
+      console.log("Defining background task");
+      try {
+        await ContactsService.load();
+        await this.unregister();
+        return BackgroundFetch.BackgroundFetchResult.NewData;
+      } catch {
+        console.error("Error loading contacts");
+        return BackgroundFetch.BackgroundFetchResult.Failed;
+      }
+    });
   }
 }
 
@@ -92,7 +107,8 @@ export class ContactsService {
     });
   }
 
-  private static async syncContacts() {
+  private static async sync() {
+    console.log("sync called");
     const contacts = await this.loadFromDevice();
     if (contacts) {
       this.addContacts(contacts);
@@ -103,7 +119,7 @@ export class ContactsService {
     console.log("load");
     const contacts = await this.getContacts();
     if (contacts.length === 0) {
-      await this.syncContacts();
+      await this.sync();
     }
   }
 
